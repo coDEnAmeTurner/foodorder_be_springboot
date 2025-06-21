@@ -1,0 +1,14 @@
+services:
+  mysql:
+    container_name: 'guide-mysql'
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=foodorder_spring_db'
+      - 'MYSQL_ROOT_PASSWORD=Admin@123'
+    ports:
+      - '3360:3306'
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
