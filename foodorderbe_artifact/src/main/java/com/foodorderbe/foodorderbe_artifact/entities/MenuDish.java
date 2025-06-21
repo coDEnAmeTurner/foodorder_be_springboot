@@ -6,33 +6,31 @@ import java.util.Date;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "rate")
-public class Rate implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@Table(name = "menuDish")
+public class MenuDish implements Serializable {
+    @EmbeddedId
+    private MenuDishKey id;
 
-    // Foreign key to User
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = true)
-    private User user;
+    @MapsId("menuId")
+    @JoinColumn(name = "menuId")
+    private Menu menu;
 
-    // Foreign key to Dish
     @ManyToOne
-    @JoinColumn(name = "dishId", nullable = true)
+    @MapsId("dishId")
+    @JoinColumn(name = "dishId")
     private Dish dish;
 
-    @Column(nullable = false)
-    private int stars = 1;
+    @Column(name = "count", nullable = false, columnDefinition = "int default 0")
+    private int count;
 
     @CreationTimestamp
     @Column(name = "dateCreated", nullable = false)
@@ -42,22 +40,20 @@ public class Rate implements Serializable {
     @Column(name = "dateModified", nullable = false)
     private Date dateModified;
 
-    // Getters and Setters
-
-    public Long getId() {
+    public MenuDishKey getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(MenuDishKey id) {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Menu getMenu() {
+        return menu;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 
     public Dish getDish() {
@@ -68,12 +64,12 @@ public class Rate implements Serializable {
         this.dish = dish;
     }
 
-    public int getStars() {
-        return stars;
+    public int getCount() {
+        return count;
     }
 
-    public void setStars(int stars) {
-        this.stars = stars;
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public Date getDateCreated() {
@@ -92,14 +88,14 @@ public class Rate implements Serializable {
         this.dateModified = dateModified;
     }
 
-    public Rate() {
+    public MenuDish() {
     }
 
-    public Rate(Long id, User user, Dish dish, int stars, Date dateCreated, Date dateModified) {
+    public MenuDish(MenuDishKey id, Menu menu, Dish dish, int count, Date dateCreated, Date dateModified) {
         this.id = id;
-        this.user = user;
+        this.menu = menu;
         this.dish = dish;
-        this.stars = stars;
+        this.count = count;
         this.dateCreated = dateCreated;
         this.dateModified = dateModified;
     }
